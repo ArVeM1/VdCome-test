@@ -12,6 +12,15 @@ const CreateUser = ({show, onHide, create}) => {
             id: Date.now()
         }
         create(newUser)
+        if (localStorage.getItem('users')) {
+            let storage = JSON.parse(localStorage.getItem('users'))
+            storage.push(newUser);
+            localStorage.setItem('users', JSON.stringify(storage))
+        } else {
+            const myObj = [];
+            myObj.push(newUser);
+            localStorage.setItem('users', JSON.stringify(myObj));
+        }
         setUser({name: '', trn: 0, yearEnd: '', ard: '', compNum: 0, email: '', phone: 0, address: ''})
         onHide();
     }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Col, Container, Form, Pagination, Row} from "react-bootstrap";
 import CreateUser from "../components/modals/CreateUser";
 import TableClients from "../components/TableClients";
@@ -47,13 +47,30 @@ const Home = () => {
     ]);
     const [searchValue, setSearchValue] = useState('');
 
+    useEffect(() => {
+        const storedUsers = JSON.parse(localStorage.getItem('users'))
+        if (storedUsers) {
+            const newUsers = [
+                ...users
+            ]
+            for (let user of storedUsers) {
+                newUsers.push(user)
+            }
+            setUsers(newUsers)
+        }
+    }, [])
+
     const sortData = (field, sort) => {
         const copyData = [...users];
         let sortData;
         if (sort === "ASC") {
-            sortData = copyData.sort((a,b) => {return a[field] > b[field] ? 1 : -1})
+            sortData = copyData.sort((a, b) => {
+                return a[field] > b[field] ? 1 : -1
+            })
         } else {
-            sortData = copyData.sort((a,b) => {return a[field] > b[field] ? -1 : 1})
+            sortData = copyData.sort((a, b) => {
+                return a[field] > b[field] ? -1 : 1
+            })
         }
         setUsers(sortData)
     }
